@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GB Canvas Turntable</title>
+    <link rel="stylesheet" href="./style/lottery.css">
+    <style>
+        .wrapper{
+            padding:20px 40px;
+        }
+        .fork-github{
+            position: fixed;
+            right: -100px;
+            top: 45px;
+            z-index: 9999;
+            padding: 2px 100px;
+            font-size: 12px;
+            background-color: #444;
+            border: 1px solid #000;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+            text-align: center;
+        }
+        .fork-github a{
+            color: #fff;
+        }
+
+        .gb-turntable a.gb-turntable-btn{
+            border: none;
+        }
+
+    </style>
+</head>
+<body ontouchstart>
+
+<div class="wrapper typo" id="wrapper">
+
+    <h1>GB-canvas-turntable.js</h1>
+
+    <h2>DEMO</h2>
+
+    <h3><a href="javascript:;" id="normal">普通</a></h3>
+
+    <section id="turntable" class="gb-turntable">
+        <div class="gb-turntable-container">
+            <canvas class="gb-turntable-canvas" width="300" height="300px">抱歉！浏览器不支持。</canvas>
+        </div>
+
+        <a class="gb-turntable-btn" href="javascript:;">抽奖</a>
+    </section>
+
+<pre>
+gbTurntable.init({
+    id: 'turntable',
+    config: function(callback){
+        // 获取奖品信息
+        callback && callback(['1元红包','2元红包','3元红包','4元红包','5元红包','6元红包']);
+    },
+    getPrize: function(callback) {
+        // 获取中奖信息
+        var num = Math.random() * 6 >>> 0,   //奖品ID
+            chances = num;  // 可抽奖次数
+            callback && callback([num, chances]);
+    },
+    gotBack: function(data) {
+        alert('恭喜抽中' + data);
+    }
+});
+</pre>
+
+</div>
+
+<div class="fork-github">
+    <a href="https://github.com/givebest/GB-canvas-turntable">Fork me on Github</a>
+</div>
+
+
+<script src="src/lottery.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        gbTurntable.init({
+            id: 'turntable',
+            config: function(callback){
+                // 获取奖品信息
+                callback && callback(['1元红包','2元红包','3元红包','4元红包','5元红包','6元红包']);
+            },
+            getPrize: function(callback) {
+                // 获取中奖信息
+                var num = Math.random() * 6 >>> 0,   //奖品ID
+                        chances = num;  // 可抽奖次数
+                callback && callback([num, chances]);
+            },
+            gotBack: function(data) {
+                alert('恭喜抽中' + data);
+            }
+        });
+    }, false);
+</script>
+</body>
+</html>
