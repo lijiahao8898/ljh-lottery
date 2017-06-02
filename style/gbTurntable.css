@@ -1,3 +1,6 @@
+*{
+  box-sizing: border-box;
+}
 .gb-turntable ul, .gb-turntable li {
     margin: 0;
     padding: 0;
@@ -5,11 +8,13 @@
 }
 
 .gb-turntable {
+    box-sizing: content-box;
+    margin: 0 auto;
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 600px;
+    height: 600px;
     border-radius: 50%;
-    border: 16px solid #E44025;
+    border: 20px solid #fff;
     box-shadow: 0 2px 3px #333, 0 0 2px #000
 }
 
@@ -32,7 +37,13 @@
 .gb-turntable-container canvas {
     width: inherit;
     height: inherit;
-    border-radius: 50%
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+    overflow: hidden;
+    background: transparent;
 }
 
 .gb-turntalbe-list {
@@ -67,11 +78,9 @@
     padding-top: 20px;
     margin: 0 auto;
     text-align: center;
-    -webkit-transform-origin: 50% 150px;
-    -ms-transform-origin: 50% 150px;
-    transform-origin: 50% 150px
 }
-.gb-turntable-item img{
+
+.gb-turntable-item img {
     max-width: 50px;
 }
 
@@ -79,12 +88,15 @@
     position: relative;
     margin: 0 auto;
     text-align: center;
+    -webkit-transform-origin: 50% 300px;
+    -ms-transform-origin: 50% 300px;
+    transform-origin: 50% 300px
 }
 
 .gb-turntable-btn {
     position: absolute;
-    left: 110px;
-    top: 110px;
+    left: 260px;
+    top: 260px;
     z-index: 3;
     width: 80px;
     height: 80px;

@@ -145,9 +145,9 @@
             // 填充扇形
             ctx.fill();
             // 绘制边框
-            //ctx.lineWidth = 0.1;
-            //ctx.strokeStyle = '#e4370e';
-            //ctx.stroke();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#e4370e';
+            ctx.stroke();
 
             // 恢复前一个状态
             ctx.restore();
