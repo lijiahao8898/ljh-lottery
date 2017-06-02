@@ -1,5 +1,8 @@
 # selfplugin-lottery
+
 基于的GB-canvas-turntable的抽奖插件
+
+感谢GB,原代码地址[https://github.com/givebest/GB-canvas-turntable](https://github.com/givebest/GB-canvas-turntable)
 
 ### 功能
 

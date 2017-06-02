@@ -5,11 +5,16 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GB Canvas Turntable</title>
-    <link rel="stylesheet" href="./style/lottery.css">
+    <title>大转盘</title>
+    <link rel="stylesheet" href="./style/gbTurntable.css">
     <style>
+        body{
+            background: #a0a0a0;
+        }
         .wrapper{
-            padding:20px 40px;
+            padding: 20px 40px;
+            margin-left: 200px;
+            margin-top: 200px;
         }
         .fork-github{
             position: fixed;
@@ -28,7 +33,6 @@
         .fork-github a{
             color: #fff;
         }
-
         .gb-turntable a.gb-turntable-btn{
             border: none;
         }
@@ -39,38 +43,13 @@
 
 <div class="wrapper typo" id="wrapper">
 
-    <h1>GB-canvas-turntable.js</h1>
-
-    <h2>DEMO</h2>
-
-    <h3><a href="javascript:;" id="normal">普通</a></h3>
-
     <section id="turntable" class="gb-turntable">
         <div class="gb-turntable-container">
-            <canvas class="gb-turntable-canvas" width="300" height="300px">抱歉！浏览器不支持。</canvas>
+            <canvas class="gb-turntable-canvas" width="1200" height="1200px">抱歉！浏览器不支持。</canvas>
         </div>
 
-        <a class="gb-turntable-btn" href="javascript:;">抽奖</a>
+        <a class="gb-turntable-btn" href="javascript:;">GO</a>
     </section>
-
-<pre>
-gbTurntable.init({
-    id: 'turntable',
-    config: function(callback){
-        // 获取奖品信息
-        callback && callback(['1元红包','2元红包','3元红包','4元红包','5元红包','6元红包']);
-    },
-    getPrize: function(callback) {
-        // 获取中奖信息
-        var num = Math.random() * 6 >>> 0,   //奖品ID
-            chances = num;  // 可抽奖次数
-            callback && callback([num, chances]);
-    },
-    gotBack: function(data) {
-        alert('恭喜抽中' + data);
-    }
-});
-</pre>
 
 </div>
 
@@ -79,14 +58,90 @@ gbTurntable.init({
 </div>
 
 
-<script src="src/lottery.js"></script>
+<script src="src/gbTurntable.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         gbTurntable.init({
             id: 'turntable',
             config: function(callback){
                 // 获取奖品信息
-                callback && callback(['1元红包','2元红包','3元红包','4元红包','5元红包','6元红包']);
+                var arr = [{
+                    name: '谢谢参与',
+                    type: 6,
+                    level: 1,
+                    id: 1
+                }, {
+                    name: '谢谢参与',
+                    type: 6,
+                    level: 2,
+                    id: 2
+                }, {
+                    name: '积分',
+                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+                    type: 1,
+                    rotate_msg: 5,
+                    level: 3,
+                    id: 3
+                }, {
+                    name: '现金',
+                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_a5416a7a8008672a40da6d1e1ac097b4.png',
+                    type: 4,
+                    rotate_msg: 6,
+                    level: 4,
+                    id: 4
+                }, {
+                    name: '优惠券',
+                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
+                    type: 3,
+                    rotate_msg: 7,
+                    level: 5,
+                    id: 5
+                }, {
+                    name: '余额',
+                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
+                    rotate_msg: 800,
+                    type: 2,
+                    level: 6,
+                    id: 6
+                }, {
+                    item_name: 'KC Masterpiece烧烤酱 2瓶',
+                    url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+                    type: 5,
+                    level: 7,
+                    id: 7,
+                    sku_uid: '38699_67540',
+                    item_uid: '38699_164711',
+                    item_type: 1
+                }, {
+                    name: '谢谢参与',
+                    type: 6,
+                    level: 8,
+                    id: 8
+                }, {
+                    name: '谢谢参与',
+                    type: 6,
+                    level: 1,
+                    id: 1
+                },
+                    {
+                        name: '谢谢参与',
+                        type: 6,
+                        level: 1,
+                        id: 1
+                    }, {
+                        name: '谢谢参与',
+                        type: 6,
+                        level: 1,
+                        id: 1
+                    }, {
+                        name: '谢谢参与',
+                        type: 6,
+                        level: 1,
+                        id: 1
+                    }
+
+                ];
+                callback && callback(arr);
             },
             getPrize: function(callback) {
                 // 获取中奖信息
@@ -95,7 +150,7 @@ gbTurntable.init({
                 callback && callback([num, chances]);
             },
             gotBack: function(data) {
-                alert('恭喜抽中' + data);
+                alert('恭喜抽中' + data.name);
             }
         });
     }, false);
