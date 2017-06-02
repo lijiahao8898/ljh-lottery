@@ -63,11 +63,21 @@
     cssSupport = {
         cssPrefix: cssPrefix,
         transform: normalizeCss('Transform'),
-        transitionEnd: normalizeEvent('TransitionEnd')
-    }
-
-    var transform = cssSupport.transform;
+        transitionEnd: normalizeEvent('TransitionEnd'),
+        webkitTransform: normalizeCss('-webkit-transform')
+    };
+    var transformStyle;
     var transitionEnd = cssSupport.transitionEnd;
+
+    var Android = /android/i.test(navigator.userAgent);
+    var ios = /ios/i.test(navigator.userAgent);
+    // 兼容游览器嗅探不正确的问题
+    if (Android) {
+        // 安卓兼容
+        transformStyle = cssSupport.webkitTransform;
+    } else {
+        transformStyle = cssSupport.transform;
+    }
 
     // alert(transform);
     // alert(transitionEnd);
@@ -134,6 +144,22 @@
             ctx.rotate((360 / num * i - rotateDeg) * Math.PI / 180);
             // 绘制圆弧
             ctx.arc(0, 0, 600, 0, 2 * Math.PI / num, false);
+            //
+            //var getRandomColor = function(){
+            //
+            //    return  '#' +
+            //
+            //        (function(color){
+            //
+            //            return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
+            //
+            //            && (color.length == 6) ?  color : arguments.callee(color);
+            //
+            //        })('');
+            //
+            //};
+            //
+            //ctx.fillStyle = getRandomColor();
 
             // 颜色间隔
             if (i % 2 == 0) {
@@ -145,9 +171,9 @@
             // 填充扇形
             ctx.fill();
             // 绘制边框
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = '#e4370e';
-            ctx.stroke();
+            //ctx.lineWidth = 1;
+            //ctx.strokeStyle = '#e4370e';
+            //ctx.stroke();
 
             // 恢复前一个状态
             ctx.restore();
@@ -157,8 +183,8 @@
                 case 1:
                     // 积分
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
-                        '<span>积分' + opts.prizes[i].rotate_msg + '</span>' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span>' + opts.prizes[i].prize_value + '积分</span>' +
                         '<img src="http://img.mockuai.com/tms/2017/4/20/upload_099474c1a35b4d522f715f2d671af1c0.png">' +
                         '</div>' +
                         '</li>');
@@ -166,8 +192,8 @@
                 case 2:
                     // 余额
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
-                        '<span>余额' + (opts.prizes[i].rotate_msg / 100).toFixed(2) + '</span>' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
                         '<img src="http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png">' +
                         '</div>' +
                         '</li>');
@@ -175,8 +201,8 @@
                 case 3:
                     // 优惠券
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
-                        '<span>优惠券' + opts.prizes[i].rotate_msg + '</span>' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
                         '<img src="http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png">' +
                         '</div>' +
                         '</li>');
@@ -184,8 +210,8 @@
                 case 4:
                     // 现金
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
-                        '<span>现金' + (opts.prizes[i].rotate_msg / 100).toFixed(2) + '</span>' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
                         '<img src="http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png">' +
                         '</div>' +
                         '</li>');
@@ -193,16 +219,16 @@
                 case 5:
                     // 商品
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + opts.prizes[i].item_name + '</span>' +
-                        '<img src="' + opts.prizes[i].url + '">' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span>' + (opts.prizes[i].item_short_name || opts.prizes[i].item_name) + '</span>' +
+                        '<img src="' + opts.prizes[i].item_image_url + '">' +
                         '</div>' +
                         '</li>');
                     break;
                 case 6:
                     // 未中奖
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transform + ': rotate(' + i * turnNum + 'turn)">' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
                         '</span><span class="no-image">谢谢参与</span>' +
                         '<img src="http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png">' +
                         '</div>' +
@@ -216,8 +242,25 @@
                 prizeItems.innerHTML = html.join('');
             }
 
+            // 电灯泡
+            var bulb = document.getElementById('draw-cycle');
+            var li = document.querySelector('.gb-turntable-container');
+            var div = document.createElement('div');
+            if (!bulb) {
+                insertAfter('div', li);
+            }
+
         }
 
+    }
+
+    function insertAfter(newElement, targetElement) {
+        var parent = targetElement.parentNode; // 找到指定元素的父节点
+        if (parent.lastChild == targetElement) { // 判断指定元素的是否是节点中的最后一个位置 如果是的话就直接使用appendChild方法
+            parent.appendChild(newElement, targetElement);
+        } else {
+            parent.insertBefore(newElement, targetElement.nextSibling);
+        }
     }
 
     /**
@@ -247,8 +290,10 @@
         // runInit();
 
         // setTimeout(function() {
-        // addClass(container, 'gb-run');
-        container.style[transform] = 'rotate(' + deg + 'deg)';
+        // addClass(container, 'gb-run');transform
+        container.style[transformStyle] = 'rotate(' + deg + 'deg)';
+        container.style.webkitTransform = 'rotate(' + deg + 'deg)';
+        container.style.transform = 'rotate(' + deg + 'deg)';
         // }, 10);
     }
 
@@ -275,9 +320,9 @@
 
 
                 if (parity % 2 == 0) {
-                    deg = (deg + (180 / num) * Math.random()) - ((180/num) * 0.01);
+                    deg = (deg + (180 / num) * Math.random()) - ((180 / num) * 0.01);
                 } else {
-                    deg = (deg - (180 / num) * Math.random()) + ((180/num) * 0.01);
+                    deg = (deg - (180 / num) * Math.random()) + ((180 / num) * 0.01);
                 }
                 console.log(num, deg);
                 runRotate(deg);

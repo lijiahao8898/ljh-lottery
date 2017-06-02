@@ -1,6 +1,7 @@
-*{
-  box-sizing: border-box;
+* {
+    box-sizing: border-box;
 }
+
 .gb-turntable ul, .gb-turntable li {
     margin: 0;
     padding: 0;

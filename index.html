@@ -8,15 +8,17 @@
     <title>大转盘</title>
     <link rel="stylesheet" href="./style/gbTurntable.css">
     <style>
-        body{
+        body {
             background: #a0a0a0;
         }
-        .wrapper{
+
+        .wrapper {
             padding: 20px 40px;
             margin-left: 200px;
             margin-top: 200px;
         }
-        .fork-github{
+
+        .fork-github {
             position: fixed;
             right: -100px;
             top: 45px;
@@ -30,10 +32,12 @@
             transform: rotate(45deg);
             text-align: center;
         }
-        .fork-github a{
+
+        .fork-github a {
             color: #fff;
         }
-        .gb-turntable a.gb-turntable-btn{
+
+        .gb-turntable a.gb-turntable-btn {
             border: none;
         }
 
@@ -60,10 +64,10 @@
 
 <script src="src/gbTurntable.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         gbTurntable.init({
             id: 'turntable',
-            config: function(callback){
+            config: function (callback) {
                 // 获取奖品信息
                 var arr = [{
                     name: '谢谢参与',
@@ -143,14 +147,15 @@
                 ];
                 callback && callback(arr);
             },
-            getPrize: function(callback) {
+            getPrize: function (callback) {
                 // 获取中奖信息
                 var num = Math.random() * 6 >>> 0,   //奖品ID
                         chances = num;  // 可抽奖次数
                 callback && callback([num, chances]);
             },
-            gotBack: function(data) {
+            gotBack: function (data) {
                 alert('恭喜抽中' + data.name);
+                console.log(2)
             }
         });
     }, false);
