@@ -244,10 +244,17 @@
 
             // 电灯泡
             var bulb = document.getElementById('draw-cycle');
-            var li = document.querySelector('.gb-turntable-container');
             var div = document.createElement('div');
             if (!bulb) {
-                insertAfter('div', li);
+                // 塞灯泡
+                div.id = 'draw-cycle';
+                console.log(div);
+                console.log(opts);
+                container.appendChild(div);
+                for(var n = 0; n < num.length * 2; n++){
+
+                }
+                //insertAfter('div', container);
             }
 
         }
