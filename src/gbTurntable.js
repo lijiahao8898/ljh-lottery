@@ -18,6 +18,8 @@
         deg = 0,
         fnGetPrize,
         fnGotBack,
+        bgBlock,
+        bulbColor,
         optsPrize;
 
     var cssPrefix,
@@ -46,7 +48,7 @@
      * @param  {[type]} name [description]
      * @return {[type]}      [description]
      */
-    function normalizeEvent(name) {
+    function normalizeEvent (name) {
         return eventPrefix ? eventPrefix + name : name.toLowerCase();
     }
 
@@ -55,7 +57,7 @@
      * @param  {[type]} name [description]
      * @return {[type]}      [description]
      */
-    function normalizeCss(name) {
+    function normalizeCss (name) {
         name = name.toLowerCase();
         return cssPrefix ? cssPrefix + name : name;
     }
@@ -67,6 +69,7 @@
         webkitTransform: normalizeCss('-webkit-transform')
     };
     var transformStyle;
+    var transform = cssSupport.transform;
     var transitionEnd = cssSupport.transitionEnd;
 
     var Android = /android/i.test(navigator.userAgent);
@@ -82,9 +85,12 @@
     // alert(transform);
     // alert(transitionEnd);
 
-    function init(opts) {
+    function init (opts) {
         fnGetPrize = opts.getPrize;
         fnGotBack = opts.gotBack;
+        console.log(opts);
+        bgBlock = opts.backgroundBlock;
+        bulbColor = opts.bulbColor;
 
         opts.config(function (data) {
             prizes = opts.prizes = data;
@@ -108,7 +114,7 @@
      * @param  {String} id
      * @param  {Number} 奖品份数
      */
-    function draw(opts) {
+    function draw (opts) {
         opts = opts || {};
         if (!opts.id || num >>> 0 === 0) return;
 
@@ -145,7 +151,7 @@
             // 绘制圆弧
             ctx.arc(0, 0, 600, 0, 2 * Math.PI / num, false);
             //
-            //var getRandomColor = function(){
+            // var getRandomColor = function(){
             //
             //    return  '#' +
             //
@@ -157,15 +163,15 @@
             //
             //        })('');
             //
-            //};
-            //
-            //ctx.fillStyle = getRandomColor();
+            // };
+
+            // ctx.fillStyle = getRandomColor();
 
             // 颜色间隔
             if (i % 2 == 0) {
-                ctx.fillStyle = '#fe6869';
+                ctx.fillStyle = bgBlock.split('/')[0];
             } else {
-                ctx.fillStyle = '#ff8a88';
+                ctx.fillStyle = bgBlock.split('/')[1];
             }
 
             // 填充扇形
@@ -233,7 +239,7 @@
                         '<img src="http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png">' +
                         '</div>' +
                         '</li>');
-                    break
+                    break;
             }
             //html.push('<li class="gb-turntable-item"> <p style="' + transform + ': rotate(' + i * turnNum + 'turn)">' + opts.prizes[i] + '</p><img src="http://img.mockuai.com/tms/2017/3/31/upload_f94f81e85b3427ccaa2ef63f3c20ef01.png"> </li>');
             if ((i + 1) === num) {
@@ -241,40 +247,57 @@
                 container.appendChild(prizeItems);
                 prizeItems.innerHTML = html.join('');
             }
-
-            // 电灯泡
-            var bulb = document.getElementById('draw-cycle');
-            var div = document.createElement('div');
-            if (!bulb) {
-                // 塞灯泡
-                div.id = 'draw-cycle';
-                console.log(div);
-                console.log(opts);
-                container.appendChild(div);
-                for(var n = 0; n < num.length * 2; n++){
-
-                }
-                //insertAfter('div', container);
+        }
+        // 电灯泡
+        var bulb = document.getElementById('draw-cycle');
+        var div = document.createElement('div');
+        if (!bulb) {
+            // 塞灯泡
+            div.id = 'draw-cycle';
+            var bulbArr = [];
+            for (var n = 0; n < (num * 2); n++) {
+                bulbArr.push('<div class="draw-cycle">' +
+                    '<div class="block" style="transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn);-webkit-transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn)">' +
+                    '<span style="top: -' + (n * ( 1 / (num * 2) ) + 22) + 'px"></span>' +
+                    '</div>' +
+                    '</div>')
             }
+            container.appendChild(div);
+            div.innerHTML = bulbArr.join('');
 
+            // 小电灯泡 闪闪发光~
+            var t = 0;
+            var even = document.getElementsByClassName('draw-cycle');
+            // console.log(even);
+            var timer = setInterval(function () {
+                t += 1;
+                if (t % 2 == 0) {
+                    for(var m = 0 ; m < even.length; m ++) {
+                        if(m % 2 === 0) {
+                            even[m].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[0];
+                        } else {
+                            even[m].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[1]
+                        }
+                    }
+                } else {
+                    for(var z = 0; z < even.length; z ++) {
+                        if(z % 2 === 0) {
+                            even[z].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[1]
+                        } else {
+                            even[z].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[0]
+                        }
+                    }
+                }
+            }, 200);
         }
 
-    }
-
-    function insertAfter(newElement, targetElement) {
-        var parent = targetElement.parentNode; // 找到指定元素的父节点
-        if (parent.lastChild == targetElement) { // 判断指定元素的是否是节点中的最后一个位置 如果是的话就直接使用appendChild方法
-            parent.appendChild(newElement, targetElement);
-        } else {
-            parent.insertBefore(newElement, targetElement.nextSibling);
-        }
     }
 
     /**
      * [提示]
      * @param  {String} msg [description]
      */
-    function showMsg(msg) {
+    function showMsg (msg) {
         alert(msg);
     }
 
@@ -282,6 +305,7 @@
      * [初始化转盘]
      * @return {[type]} [description]
      */
+
     /*  function runInit() {
      removeClass(container, 'gb-run');
      container.style[transform] = 'rotate(0deg)';
@@ -293,7 +317,7 @@
      * @param  {[type]} deg [description]
      * @return {[type]}     [description]
      */
-    function runRotate(deg) {
+    function runRotate (deg) {
         // runInit();
 
         // setTimeout(function() {
@@ -308,7 +332,7 @@
      * 抽奖事件
      * @return {[type]} [description]
      */
-    function events() {
+    function events () {
         bind(btn, 'click', function () {
             /*      var prizeId,
              chances;*/
@@ -325,13 +349,12 @@
                 deg = deg || 0;
                 deg = deg + (360 - deg % 360) + (360 * 10 - data[0] * (360 / num));
 
-
                 if (parity % 2 == 0) {
                     deg = (deg + (180 / num) * Math.random()) - ((180 / num) * 0.01);
                 } else {
                     deg = (deg - (180 / num) * Math.random()) + ((180 / num) * 0.01);
                 }
-                console.log(num, deg);
+                // console.log(num, deg);
                 runRotate(deg);
             });
 
@@ -340,12 +363,11 @@
         });
     }
 
-    function eGot() {
+    function eGot () {
         //if (optsPrize.chances && optsPrize.chances !== 0) removeClass(btn, 'disabled');
         removeClass(btn, 'disabled');
         fnGotBack(prizes[optsPrize.prizeId]);
     }
-
 
     /**
      * Bind events to elements
@@ -353,7 +375,7 @@
      * @param {Event}     event  Event to detach
      * @param {Function}  fn     Callback function
      */
-    function bind(ele, event, fn) {
+    function bind (ele, event, fn) {
         if (typeof addEventListener === 'function') {
             ele.addEventListener(event, fn, false);
         } else if (ele.attachEvent) {
@@ -367,6 +389,7 @@
      * @param {Event}     event  Event to detach
      * @param {Function}  fn     Callback function
      */
+
     /*  function unbind(ele, event, fn) {
      if (typeof removeEventListener === 'function') {
      ele.removeEventListener(event, fn, false);
@@ -381,7 +404,7 @@
      * @param {String} cls   className
      * @return {Boolean}
      */
-    function hasClass(ele, cls) {
+    function hasClass (ele, cls) {
         if (!ele || !cls) return false;
         if (ele.classList) {
             return ele.classList.contains(cls);
@@ -391,7 +414,7 @@
     }
 
     // addClass
-    function addClass(ele, cls) {
+    function addClass (ele, cls) {
         if (ele.classList) {
             ele.classList.add(cls);
         } else {
@@ -400,7 +423,7 @@
     }
 
     // removeClass
-    function removeClass(ele, cls) {
+    function removeClass (ele, cls) {
         if (ele.classList) {
             ele.classList.remove(cls);
         } else {
@@ -412,7 +435,7 @@
         init: function (opts) {
             return init(opts);
         }
-    }
+    };
 
     // (@see https://github.com/madrobby/zepto/blob/master/src/zepto.js)
     window.gbTurntable === undefined && (window.gbTurntable = gbTurntable);

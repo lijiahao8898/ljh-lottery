@@ -13,9 +13,6 @@
         }
 
         .wrapper {
-            padding: 20px 40px;
-            margin-left: 200px;
-            margin-top: 200px;
         }
 
         .fork-github {
@@ -58,7 +55,7 @@
 </div>
 
 <div class="fork-github">
-    <a href="https://github.com/givebest/GB-canvas-turntable">Fork me on Github</a>
+    <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
 </div>
 
 
@@ -67,6 +64,8 @@
     document.addEventListener('DOMContentLoaded', function () {
         gbTurntable.init({
             id: 'turntable',
+            backgroundBlock: '#fe6869/#ff8a88',
+            bulbColor: '#f9ffe3/#ffe176',
             config: function (callback) {
                 // 获取奖品信息
                 var arr = [{
@@ -115,37 +114,18 @@
                     name: '谢谢参与',
                     type: 6,
                     id: 8
-                }, {
-                    name: '谢谢参与',
-                    type: 6,
-                    id: 1
-                },
-                    {
-                        name: '谢谢参与',
-                        type: 6,
-                        id: 1
-                    }, {
-                        name: '谢谢参与',
-                        type: 6,
-                        id: 1
-                    }, {
-                        name: '谢谢参与',
-                        type: 6,
-                        id: 1
-                    }
-
-                ];
+                }];
                 callback && callback(arr);
             },
             getPrize: function (callback) {
                 // 获取中奖信息
                 var num = Math.random() * 6 >>> 0,   //奖品ID
-                        chances = num;  // 可抽奖次数
+                    chances = num;  // 可抽奖次数
                 callback && callback([num, chances]);
             },
             gotBack: function (data) {
                 alert('恭喜抽中' + data.name);
-                console.log(2)
+                console.log(2);
             }
         });
     }, false);
