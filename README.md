@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
             circleWidth: 400,
             auto: true,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
             backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
-            bulbColor: '#f9ffe3/#ffe176',
             bulb: {
                 needBulb: true,                         // 开关
                 color: '#f9ffe3/#ffe176',               // 灯泡间隔色
@@ -162,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
 * 转盘转动的方式：转盘转动还是指针转动
 * 自定义转盘的速度
 * 存在两个的情况
+* ~~触发结果可配置（自动触发、手动触发）~~
 
 ### 问题
 1. 游览器嗅探不兼容 - Android原生的webView ( 暂时性处理代码不雅观 )
