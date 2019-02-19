@@ -18,8 +18,11 @@
         deg = 0,
         fnGetPrize,
         fnGotBack,
-        bgBlock,
-        bulbColor,
+        circleWidth,        // 圆的宽度
+        backgroundColor,    // 转盘间隔色
+        bulb,               // 灯泡间隔色
+        line,               // 边框
+        auto,               // 自动出结果
         optsPrize;
 
     var cssPrefix,
@@ -82,15 +85,15 @@
         transformStyle = cssSupport.transform;
     }
 
-    // alert(transform);
-    // alert(transitionEnd);
-
     function init (opts) {
+        console.log(opts);
         fnGetPrize = opts.getPrize;
         fnGotBack = opts.gotBack;
-        console.log(opts);
-        bgBlock = opts.backgroundBlock;
-        bulbColor = opts.bulbColor;
+        backgroundColor = opts.backgroundColor;
+        bulb = opts.bulb;
+        line = opts.line;
+        circleWidth = opts.circleWidth;
+        auto = opts.auto;
 
         opts.config(function (data) {
             prizes = opts.prizes = data;
@@ -143,43 +146,30 @@
             // 开始一条新路径
             ctx.beginPath();
             // 位移到圆心，下面需要围绕圆心旋转
-            ctx.translate(600, 600);
+            ctx.translate(circleWidth, circleWidth);
             // 从(0, 0)坐标开始定义一条新的子路径
             ctx.moveTo(0, 0);
             // 旋转弧度,需将角度转换为弧度,使用 degrees * Math.PI/180 公式进行计算。
             ctx.rotate((360 / num * i - rotateDeg) * Math.PI / 180);
             // 绘制圆弧
-            ctx.arc(0, 0, 600, 0, 2 * Math.PI / num, false);
-            //
-            // var getRandomColor = function(){
-            //
-            //    return  '#' +
-            //
-            //        (function(color){
-            //
-            //            return (color +=  '0123456789abcdef'[Math.floor(Math.random()*16)])
-            //
-            //            && (color.length == 6) ?  color : arguments.callee(color);
-            //
-            //        })('');
-            //
-            // };
-
-            // ctx.fillStyle = getRandomColor();
+            ctx.arc(0, 0, circleWidth, 0, 2 * Math.PI / num, false);
 
             // 颜色间隔
             if (i % 2 == 0) {
-                ctx.fillStyle = bgBlock.split('/')[0];
+                ctx.fillStyle = backgroundColor.split('/')[0];
             } else {
-                ctx.fillStyle = bgBlock.split('/')[1];
+                ctx.fillStyle = backgroundColor.split('/')[1];
             }
 
             // 填充扇形
             ctx.fill();
+
             // 绘制边框
-            //ctx.lineWidth = 1;
-            //ctx.strokeStyle = '#e4370e';
-            //ctx.stroke();
+            if(line && line.needLineWidth) {
+                ctx.lineWidth = line.width || 1;
+                ctx.strokeStyle = line.color || '#fff';
+                ctx.stroke();
+            }
 
             // 恢复前一个状态
             ctx.restore();
@@ -240,57 +230,73 @@
                         '</div>' +
                         '</li>');
                     break;
+                case 7:
+                    // 带动画的效果商品
+                    html.push('<li class="gb-turntable-item">' +
+                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
+                        '<span></span>' +
+                        '<div class="gb-turntable-prize-img-wrapper"><img class="gb-turntable-prize-img" src="' + opts.prizes[i].item_image_url + '">' +
+                        '<img class="gb-turntable-prize-default-img" src="' + opts.prizes[i].default_image_url + '">' +
+                        '</div></div>' +
+                        '</li>');
+                    break;
             }
-            //html.push('<li class="gb-turntable-item"> <p style="' + transform + ': rotate(' + i * turnNum + 'turn)">' + opts.prizes[i] + '</p><img src="http://img.mockuai.com/tms/2017/3/31/upload_f94f81e85b3427ccaa2ef63f3c20ef01.png"> </li>');
             if ((i + 1) === num) {
                 prizeItems.className = 'gb-turntalbe-list';
                 container.appendChild(prizeItems);
                 prizeItems.innerHTML = html.join('');
             }
         }
-        // 电灯泡
-        var bulb = document.getElementById('draw-cycle');
-        var div = document.createElement('div');
-        if (!bulb) {
-            // 塞灯泡
-            div.id = 'draw-cycle';
-            var bulbArr = [];
-            for (var n = 0; n < (num * 2); n++) {
-                bulbArr.push('<div class="draw-cycle">' +
-                    '<div class="block" style="transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn);-webkit-transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn)">' +
-                    '<span style="top: -' + (n * ( 1 / (num * 2) ) + 22) + 'px"></span>' +
-                    '</div>' +
-                    '</div>')
-            }
-            container.appendChild(div);
-            div.innerHTML = bulbArr.join('');
+        getBulb();
+    }
 
-            // 小电灯泡 闪闪发光~
-            var t = 0;
-            var even = document.getElementsByClassName('draw-cycle');
-            // console.log(even);
-            var timer = setInterval(function () {
-                t += 1;
-                if (t % 2 == 0) {
-                    for(var m = 0 ; m < even.length; m ++) {
-                        if(m % 2 === 0) {
-                            even[m].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[0];
-                        } else {
-                            even[m].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[1]
-                        }
-                    }
-                } else {
-                    for(var z = 0; z < even.length; z ++) {
-                        if(z % 2 === 0) {
-                            even[z].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[1]
-                        } else {
-                            even[z].firstElementChild.firstElementChild.style.background = bulbColor.split('/')[0]
-                        }
-                    }
+    // 电灯泡
+    function getBulb () {
+        if(bulb && bulb.needBulb) {
+            var bulbItem = document.getElementById('draw-cycle');
+            var div = document.createElement('div');
+            if (!bulbItem) {
+                // 塞灯泡
+                div.id = 'draw-cycle';
+                var bulbItemArr = [];
+                for (var n = 0; n < (num * 2); n++) {
+                    bulbItemArr.push('<div class="draw-cycle">' +
+                        '<div class="block" style="transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn);-webkit-transform: rotate(' + n * ( 1 / (num * 2) ) + 'turn)">' +
+                        '<span style="top: -' + (n * ( 1 / (num * 2) ) + 20) + 'px"></span>' +
+                        '</div>' +
+                        '</div>')
                 }
-            }, 200);
-        }
+                container.appendChild(div);
+                div.innerHTML = bulbItemArr.join('');
 
+                // 小电灯泡 闪闪发光~
+                if(!bulb.color) {
+                    bulb.color = '#f9ffe3/#ffe176'
+                }
+                var t = 0;
+                var even = document.getElementsByClassName('draw-cycle');
+                var timer = setInterval(function () {
+                    t += 1;
+                    if (t % 2 == 0) {
+                        for(var m = 0 ; m < even.length; m ++) {
+                            if(m % 2 === 0) {
+                                even[m].firstElementChild.firstElementChild.style.background = bulb.color.split('/')[0];
+                            } else {
+                                even[m].firstElementChild.firstElementChild.style.background = bulb.color.split('/')[1]
+                            }
+                        }
+                    } else {
+                        for(var z = 0; z < even.length; z ++) {
+                            if(z % 2 === 0) {
+                                even[z].firstElementChild.firstElementChild.style.background = bulb.color.split('/')[1]
+                            } else {
+                                even[z].firstElementChild.firstElementChild.style.background = bulb.color.split('/')[0]
+                            }
+                        }
+                    }
+                }, bulb.interval || 300);
+            }
+        }
     }
 
     /**
@@ -333,39 +339,90 @@
      * @return {[type]} [description]
      */
     function events () {
+        var prizeList = ele.querySelector('.gb-turntalbe-list');
+        if(!auto) {
+            bind(prizeList, 'click', function (e) {
+                if(e.target.className.indexOf('animation-end') !== -1) {
+                    var prizeImg = ele.querySelectorAll('.gb-turntable-prize-img');
+                    var tablewareImg = ele.querySelectorAll('.gb-turntable-prize-default-img');
+                    for(var i = 0; i < prizeImg.length; i ++) {
+                        removeClass(prizeImg[i], 'animation-hide');
+                        removeClass(tablewareImg[i], 'animation-close');
+                        removeClass(tablewareImg[i], 'animation-end');
+                        removeClass(tablewareImg[i], 'animation-shake');
+                    }
+                    eGot();
+                }
+            });
+        }
+
         bind(btn, 'click', function () {
             /*      var prizeId,
              chances;*/
-
-            addClass(btn, 'disabled');
-
             fnGetPrize(function (data) {
-                optsPrize = {
-                    prizeId: data[0],
-                    chances: data[1]
-                };
-                // 计算旋转角度
-                var parity = Math.round(10 * Math.random());
-                deg = deg || 0;
-                deg = deg + (360 - deg % 360) + (360 * 10 - data[0] * (360 / num));
+                if(!auto) {
+                    // 先经过一个很蠢的动画
+                    addClass(btn, 'disabled');
+                    var prizeImg = ele.querySelectorAll('.gb-turntable-prize-img');
+                    var tablewareImg = ele.querySelectorAll('.gb-turntable-prize-default-img');
+                    for (var i = 0; i < prizeImg.length; i++) {
+                        addClass(prizeImg[i], 'animation-hide');
+                        addClass(tablewareImg[i], 'animation-close');
+                    }
 
-                if (parity % 2 == 0) {
-                    deg = (deg + (180 / num) * Math.random()) - ((180 / num) * 0.01);
+                    setTimeout(function () {
+                        getDeg(data);
+                    }, 3000);
                 } else {
-                    deg = (deg - (180 / num) * Math.random()) + ((180 / num) * 0.01);
+                   getDeg(data);
                 }
-                // console.log(num, deg);
-                runRotate(deg);
             });
 
             // 中奖提示
-            bind(container, transitionEnd, eGot);
+            bind(container, transitionEnd, function () {
+                var tablewareImg = ele.querySelectorAll('.gb-turntable-prize-default-img');
+                for(var i = 0; i < tablewareImg.length; i ++) {
+                    removeClass(tablewareImg[i], 'animation-close');
+                    addClass(tablewareImg[i], 'animation-end');
+                    addClass(tablewareImg[i], 'animation-shake');
+                }
+                if(auto) {
+                    eGot()
+                }
+            });
         });
+    }
+
+    function getDeg (data) {
+        optsPrize = {
+            prizeId: data[0],
+            chances: data[1]
+        };
+        console.log(optsPrize);
+        // 计算旋转角度
+        var parity = Math.round(10 * Math.random());
+        deg = deg || 0;
+        deg = deg + (360 - deg % 360) + (360 * 10 - data[0] * (360 / num));
+
+        if (parity % 2 == 0) {
+            deg = (deg + (180 / num) * Math.random()) - ((180 / num) * 0.01);
+        } else {
+            deg = (deg - (180 / num) * Math.random()) + ((180 / num) * 0.01);
+        }
+        runRotate(deg);
     }
 
     function eGot () {
         //if (optsPrize.chances && optsPrize.chances !== 0) removeClass(btn, 'disabled');
         removeClass(btn, 'disabled');
+        var prizeImg = ele.querySelectorAll('.gb-turntable-prize-img');
+        var tablewareImg = ele.querySelectorAll('.gb-turntable-prize-default-img');
+        for(var i = 0; i < prizeImg.length; i ++) {
+            removeClass(prizeImg[i], 'animation-hide');
+            removeClass(tablewareImg[i], 'animation-close');
+            removeClass(tablewareImg[i], 'animation-end');
+            removeClass(tablewareImg[i], 'animation-shake');
+        }
         fnGotBack(prizes[optsPrize.prizeId]);
     }
 

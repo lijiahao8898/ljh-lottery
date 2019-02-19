@@ -12,10 +12,10 @@
     box-sizing: content-box;
     margin: 0 auto;
     position: relative;
-    width: 600px;
-    height: 600px;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
-    border: 20px solid #e45655;
+    border: 30px solid #F9C33A;
     box-shadow: 0 2px 3px #333, 0 0 2px #000;
 }
 
@@ -33,6 +33,7 @@
     -ms-border-radius: inherit;
     -webkit-transition: all 6s ease;
     transition: all 6s ease;
+    border-radius: 50%;
 }
 
 .gb-turntable-container canvas {
@@ -49,7 +50,7 @@
 
 .gb-turntalbe-list {
     position: absolute;
-    border: 4px solid #e45655;
+    box-shadow: 0 2px 20px 0 rgba(146, 98, 0, 0.68);
     border-radius: 50%;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -67,10 +68,12 @@
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     color: #fff;
     font-size: 12px;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6)
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .gb-turntable-item span {
@@ -82,22 +85,23 @@
 }
 
 .gb-turntable-item img {
-    max-width: 50px;
+    max-width: 60px;
 }
 
 .gb-turntable-item .gb-turntable-block {
     position: relative;
     margin: 0 auto;
     text-align: center;
-    -webkit-transform-origin: 50% 300px;
-    -ms-transform-origin: 50% 300px;
-    transform-origin: 50% 300px
+    -webkit-transform-origin: 50% 200px;
+    -ms-transform-origin: 50% 200px;
+    transform-origin: 50% 200px;
+    z-index: 400;
 }
 
 .gb-turntable-btn {
     position: absolute;
-    left: 260px;
-    top: 260px;
+    left: 160px;
+    top: 160px;
     z-index: 3;
     width: 80px;
     height: 80px;
@@ -129,12 +133,6 @@
 
 .gb-turntable-btn.disabled {
     pointer-events: none;
-    background: #B07A7B;
-    color: #ccc
-}
-
-.gb-turntable-btn.disabled::after {
-    border-bottom-color: #B07A7B
 }
 
 .gb-run {
@@ -143,7 +141,7 @@
 }
 
 #draw-cycle {
-    border: 4px solid #e45655;
+    box-shadow: 0 2px 20px 0 rgba(146, 98, 0, 0.68);
     position: absolute;
     border-radius: 50%;
     -webkit-border-radius: 50%;
@@ -154,8 +152,9 @@
     top: 0;
     width: inherit;
     height: inherit;
-    z-index: 2;
+    z-index: 0;
 }
+
 #draw-cycle .draw-cycle {
     color: #fff;
     position: absolute;
@@ -164,12 +163,15 @@
     top: 0;
     width: 100%;
     height: 100%;
+    border-radius: 50%;
 }
+
 #draw-cycle .draw-cycle .block {
     position: relative;
     margin: 0 auto;
     text-align: center;
 }
+
 #draw-cycle .draw-cycle .block span {
     position: relative;
     width: 12px;
@@ -180,17 +182,140 @@
     -o-border-radius: 50%;
     -ms-border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 3.5px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px 0 #FFFFFF;
 }
+
 #draw-cycle .draw-cycle:nth-child(even) .block span {
     background: #f9ffe3;
 }
+
 #draw-cycle .draw-cycle:nth-child(odd) .block span {
     background: #ffe176;
 }
 
 #draw-cycle .draw-cycle .block {
-    -webkit-transform-origin: 50% 295px;
-    -ms-transform-origin: 50% 295px;
-    transform-origin: 50% 295px;
+    -webkit-transform-origin: 50% 200px;
+    -ms-transform-origin: 50% 200px;
+    transform-origin: 50% 200px;
+}
+
+.gb-turntable {
+    /*.light{*/
+    /*width: 600px;*/
+    /*height: 600px;*/
+    /*position: absolute;*/
+    /*z-index: 2;*/
+    /*background: url("./images/light.png") no-repeat 23px 23px;*/
+
+    /*}*/
+}
+
+.gb-turntable-prize-img-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 400;
+}
+
+.gb-turntable-prize-img {
+}
+
+.gb-turntable-prize-default-img {
+    position: absolute;
+    top: -10px;
+    left: 40px;
+    opacity: 0;
+    display: none;
+    /*animation: close 3s forwards infinite;*/
+    /*-webkit-animation: close 3s forwards infinite; !*Safari and Chrome*!*/
+}
+
+.gb-turntable-prize-default-img.animation-shake {
+    position: absolute;
+    top: -10px;
+    left: 60px;
+    opacity: 1;
+    display: block;
+    animation: shake 1.5s infinite;
+}
+
+.animation-close {
+    display: block;
+    animation: close 3s forwards;
+    -webkit-animation: close 3s forwards; /*Safari and Chrome*/
+}
+
+.animation-hide {
+    animation: hide 2s 2s forwards;
+    -webkit-animation: hide 2s 2s forwards; /*Safari and Chrome*/
+}
+
+@keyframes close {
+    0% {
+        display: block;
+        opacity: 1;
+        top: -10px;
+        left: 60px;
+        transform: scale(1);
+        -ms-transform: scale(1); /* IE 9 */
+        -moz-transform: scale(1); /* Firefox */
+        -webkit-transform: scale(1); /* Safari 和 Chrome */
+        -o-transform: scale(1); /* Opera */
+    }
+    50% {
+        display: block;
+        opacity: 1;
+        top: -60px;
+        left: -20px;
+        transform: scale(0.9);
+        -ms-transform: scale(0.9); /* IE 9 */
+        -moz-transform: scale(0.9); /* Firefox */
+        -webkit-transform: scale(0.9); /* Safari 和 Chrome */
+        -o-transform: scale(0.9); /* Opera */
+    }
+    100% {
+        display: block;
+        opacity: 1;
+        top: -10px;
+        left: -20px;
+        transform: scale(1);
+        -ms-transform: scale(1); /* IE 9 */
+        -moz-transform: scale(1); /* Firefox */
+        -webkit-transform: scale(1); /* Safari 和 Chrome */
+        -o-transform: scale(1); /* Opera */
+    }
+}
+
+@keyframes hide {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+    0%, to {
+        display: block;
+        opacity: 1;
+        top: -10px;
+        left: -20px;
+        transform: translateZ(0)
+    }
+
+    10%, 30%, 50%, 70%, 90% {
+        display: block;
+        opacity: 1;
+        top: -10px;
+        left: -20px;
+        transform: translate3d(-2px, 0, 0) rotate(4deg)
+    }
+
+    20%, 40%, 60%, 80% {
+        display: block;
+        opacity: 1;
+        top: -10px;
+        left: -20px;
+        transform: translate3d(2px, 0, 0) rotate(-4deg)
+    }
 }

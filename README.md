@@ -1,23 +1,23 @@
 # selfplugin-lottery
 
-基于的GB-canvas-turntable的抽奖插件
+基于的GB-canvas-turntable的抽奖插件再改造。
 
 感谢GB,原代码地址[https://github.com/givebest/GB-canvas-turntable](https://github.com/givebest/GB-canvas-turntable)
 
 > 大转盘样式计算
 
-因为大转盘的效果使用canvas画的.为了避免出现锯齿现象.将canvas的画布大小设置为`1200`
-并且将转盘`gb-turntable`设置为画布的1/2也就是`600px`.
+因为大转盘的效果使用canvas画的.为了避免出现锯齿现象.将canvas的画布大小设置为`800`
+并且将转盘`gb-turntable`设置为画布的1/2也就是`400px`.
 其中有些样式是要根据相关计算所得:
-以`gb-turntable = 600px`为例:
+以`gb-turntable = 400px`为例:
 
 1. 将`.gb-turntable-item .gb-turntable-block`的`transform-origin`设置为原来的1/2
 
 ```css
 .gb-turntable-item .gb-turntable-block{
-    -webkit-transform-origin: 50% 300px;
-    -ms-transform-origin: 50% 300px;
-    transform-origin: 50% 300px
+    -webkit-transform-origin: 50% 200px;
+    -ms-transform-origin: 50% 200px;
+    transform-origin: 50% 200px
 }
 ```
 transform-origin: 设置旋转元素的基点位置
@@ -43,32 +43,121 @@ z-axis: 定义视图被置于 Z 轴的何处。可能的值：
         length
 ```
 
-2. 设置指针的位置. 指针的位置为转盘的大小`600px` - 指针的大小`80px` / 2 = 260px
+2. 设置指针的位置. 指针的位置为转盘的大小(`400px` - 指针的大小`80px`) / 2 = 160px
 
-```
+```css
 .gb-turntable-btn {
-       left: 260px;
-       top: 260px;
+       left: 160px;
+       top: 160px;
 }
 ```
 
 3. 在gbturntable.js 里面设置画的canvas的大小为原来的1/2.
-```
+
+```js
   // 位移到圆心，下面需要围绕圆心旋转
-  ctx.translate(600, 600);
+  ctx.translate(400, 400);
 
   // 绘制圆弧
-  ctx.arc(0, 0, 600, 0, 2 * Math.PI / num, false);
+  ctx.arc(0, 0, 400, 0, 2 * Math.PI / num, false);
 ```
 
+4. 使用代码
+```js
+document.addEventListener('DOMContentLoaded', function () {
+        // 获取奖品信息
+        var arr = [{
+            name: '谢谢参与',
+            type: 6,
+            id: 1
+        }, {
+            item_name: 'KC Masterpiece烧烤酱 2瓶',
+            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            default_image_url: './images/tableware.png',
+            type: 7,
+            level: 7,
+            id: 7,
+            sku_uid: '38699_67540',
+            item_uid: '38699_164711',
+            item_type: 1
+        }, {
+            name: '积分',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+            type: 1,
+            prize_value: 300,
+            id: 3
+        }, {
+            name: '现金',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_a5416a7a8008672a40da6d1e1ac097b4.png',
+            type: 4,
+            prize_value: 6,
+            id: 4
+        }, {
+            name: '优惠券',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
+            type: 3,
+            prize_value: 5,
+            id: 5
+        }, {
+            name: '余额',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
+            type: 2,
+            prize_value: 6,
+            id: 6
+        }, {
+            item_name: 'KC Masterpiece烧烤酱 2瓶',
+            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            default_image_url: './images/tableware.png',
+            type: 5,
+            level: 7,
+            id: 7,
+            sku_uid: '38699_67540',
+            item_uid: '38699_164711',
+            item_type: 1
+        }, {
+            name: '谢谢参与',
+            type: 6,
+            id: 8
+        }];
+        gbTurntable.init({
+            id: 'turntable',
+            circleWidth: 400,
+            auto: true,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+            backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
+            bulbColor: '#f9ffe3/#ffe176',
+            bulb: {
+                needBulb: true,                         // 开关
+                color: '#f9ffe3/#ffe176',               // 灯泡间隔色
+                interval: 300                           // 时间间隔
+            },
+            line: {                                     // 边框
+                needLineWidth: true,                    // 开关
+                width: 2,                               // 边框大小
+                color: 'red'                            // 边框颜色
+            },
+            config: function (callback) {
+                callback && callback(arr);
+            },
+            getPrize: function (callback) {
+                // 获取中奖信息
+                var num = Math.random() * 6 >>> 0,   //奖品ID
+                    chances = num;  // 可抽奖次数
+                callback && callback([num, chances]);
+            },
+            gotBack: function (data) {
+                alert('恭喜抽中' + data.name || '未知奖品');
+            }
+        });
+    }, false);
+```
 
 ### 功能
 
 ### 需要实现的功能
-* 自定义闪光小点点的问题
+* ~~自定义闪光小点点的问题~~
 * 自定义转盘的大小
 * 自定义转盘指正的图片
-* 自定义转盘的背景色
+* ~~自定义转盘的背景色~~
 * 自定义转盘的先调颜色
 * 转盘转动的方式：转盘转动还是指针转动
 * 自定义转盘的速度

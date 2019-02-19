@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="./style/gbTurntable.css">
     <style>
         body {
-            background: #a0a0a0;
+            background: #6da5ce;
+            overflow: hidden;
         }
 
-        .wrapper {
+        .wrapper{
+            margin-top: 50px;
         }
 
         .fork-github {
@@ -46,75 +48,91 @@
 
     <section id="turntable" class="gb-turntable">
         <div class="gb-turntable-container">
-            <canvas class="gb-turntable-canvas" width="1200" height="1200">抱歉！浏览器不支持。</canvas>
+            <canvas class="gb-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
         </div>
 
         <a class="gb-turntable-btn" href="javascript:;">GO</a>
     </section>
 
 </div>
-
 <div class="fork-github">
     <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
 </div>
 
-
 <script src="src/gbTurntable.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // 获取奖品信息
+        var arr = [{
+            name: '谢谢参与',
+            type: 6,
+            id: 1
+        }, {
+            item_name: 'KC Masterpiece烧烤酱 2瓶',
+            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            default_image_url: './images/tableware.png',
+            type: 7,
+            level: 7,
+            id: 7,
+            sku_uid: '38699_67540',
+            item_uid: '38699_164711',
+            item_type: 1
+        }, {
+            name: '积分',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+            type: 1,
+            prize_value: 300,
+            id: 3
+        }, {
+            name: '现金',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_a5416a7a8008672a40da6d1e1ac097b4.png',
+            type: 4,
+            prize_value: 6,
+            id: 4
+        }, {
+            name: '优惠券',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
+            type: 3,
+            prize_value: 5,
+            id: 5
+        }, {
+            name: '余额',
+            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
+            type: 2,
+            prize_value: 6,
+            id: 6
+        }, {
+            item_name: 'KC Masterpiece烧烤酱 2瓶',
+            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            default_image_url: './images/tableware.png',
+            type: 5,
+            level: 7,
+            id: 7,
+            sku_uid: '38699_67540',
+            item_uid: '38699_164711',
+            item_type: 1
+        }, {
+            name: '谢谢参与',
+            type: 6,
+            id: 8
+        }];
         gbTurntable.init({
             id: 'turntable',
-            backgroundBlock: '#fe6869/#ff8a88',
+            circleWidth: 400,
+            auto: true,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+            backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
             bulbColor: '#f9ffe3/#ffe176',
+            bulb: {
+                needBulb: true,                         // 开关
+                color: '#f9ffe3/#ffe176',               // 灯泡间隔色
+                interval: 300                           // 时间间隔
+            },
+            line: {                                     // 边框
+                needLineWidth: true,                    // 开关
+                width: 2,                               // 边框大小
+                color: 'red'                            // 边框颜色
+            },
             config: function (callback) {
-                // 获取奖品信息
-                var arr = [{
-                    name: '谢谢参与',
-                    type: 6,
-                    id: 1
-                }, {
-                    name: '谢谢参与',
-                    type: 6,
-                    level: 2,
-                    id: 2
-                }, {
-                    name: '积分',
-                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
-                    type: 1,
-                    prize_value: 300,
-                    id: 3
-                }, {
-                    name: '现金',
-                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_a5416a7a8008672a40da6d1e1ac097b4.png',
-                    type: 4,
-                    prize_value: 6,
-                    id: 4
-                }, {
-                    name: '优惠券',
-                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
-                    type: 3,
-                    prize_value: 5,
-                    id: 5
-                }, {
-                    name: '余额',
-                    image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
-                    type: 2,
-                    prize_value: 6,
-                    id: 6
-                }, {
-                    item_name: 'KC Masterpiece烧烤酱 2瓶',
-                    item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
-                    type: 5,
-                    level: 7,
-                    id: 7,
-                    sku_uid: '38699_67540',
-                    item_uid: '38699_164711',
-                    item_type: 1
-                }, {
-                    name: '谢谢参与',
-                    type: 6,
-                    id: 8
-                }];
                 callback && callback(arr);
             },
             getPrize: function (callback) {
@@ -124,8 +142,7 @@
                 callback && callback([num, chances]);
             },
             gotBack: function (data) {
-                alert('恭喜抽中' + data.name);
-                console.log(2);
+                alert('恭喜抽中' + data.name || '未知奖品');
             }
         });
     }, false);
