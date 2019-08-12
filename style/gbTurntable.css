@@ -1,13 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
-.gb-turntable ul, .gb-turntable li {
-    margin: 0;
-    padding: 0;
-    list-style: none
-}
-
 .gb-turntable {
     box-sizing: content-box;
     margin: 0 auto;
@@ -17,6 +7,12 @@
     border-radius: 50%;
     border: 30px solid #F9C33A;
     box-shadow: 0 2px 3px #333, 0 0 2px #000;
+}
+
+.gb-turntable ul, .gb-turntable li {
+    margin: 0;
+    padding: 0;
+    list-style: none
 }
 
 .gb-turntable-container {

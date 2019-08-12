@@ -5,16 +5,20 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>大转盘</title>
+    <title>抽奖</title>
     <link rel="stylesheet" href="./style/gbTurntable.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
         body {
             background: #6da5ce;
-            overflow: hidden;
         }
 
         .wrapper{
             margin-top: 50px;
+            overflow: hidden;
         }
 
         .fork-github {
@@ -42,10 +46,9 @@
 
     </style>
 </head>
-<body ontouchstart>
+<body>
 
 <div class="wrapper typo" id="wrapper">
-
     <section id="turntable" class="gb-turntable">
         <div class="gb-turntable-container">
             <canvas class="gb-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
@@ -53,8 +56,8 @@
 
         <a class="gb-turntable-btn" href="javascript:;">GO</a>
     </section>
-
 </div>
+
 <div class="fork-github">
     <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
 </div>
@@ -66,11 +69,12 @@
         var arr = [{
             name: '谢谢参与',
             type: 6,
-            id: 1
+            id: 1,
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
         }, {
-            item_name: 'KC Masterpiece烧烤酱 2瓶',
-            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
-            default_image_url: './images/tableware.png',
+            name: 'KC Masterpiece烧烤酱 3瓶',
+            imageUrl: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            imageUrlWrapper: './images/tableware.png',
             type: 7,
             level: 7,
             id: 7,
@@ -79,32 +83,32 @@
             item_type: 1
         }, {
             name: '积分',
-            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
             type: 1,
-            prize_value: 300,
+            prizeValue: 300,
             id: 3
         }, {
             name: '现金',
-            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_a5416a7a8008672a40da6d1e1ac097b4.png',
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png',
             type: 4,
-            prize_value: 6,
+            prizeValue: 6,
             id: 4
         }, {
             name: '优惠券',
-            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
             type: 3,
-            prize_value: 5,
+            prizeValue: 5,
             id: 5
         }, {
             name: '余额',
-            image_url: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
             type: 2,
-            prize_value: 6,
+            prizeValue: 6,
             id: 6
         }, {
-            item_name: 'KC Masterpiece烧烤酱 2瓶',
-            item_image_url: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
-            default_image_url: './images/tableware.png',
+            name: 'KC Masterpiece烧烤酱 2瓶',
+            imageUrl: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
+            imageUrlWrapper: './images/tableware.png',
             type: 5,
             level: 7,
             id: 7,
@@ -114,12 +118,13 @@
         }, {
             name: '谢谢参与',
             type: 6,
-            id: 8
+            id: 8,
+            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
         }];
         gbTurntable.init({
             id: 'turntable',
             circleWidth: 400,
-            auto: true,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+            auto: false,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
             backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
             bulb: {
                 needBulb: true,                         // 开关

@@ -6,7 +6,6 @@
  * @(c) 2016
  **/
 
-
 (function () {
     var $,
         ele,
@@ -34,6 +33,7 @@
             O: 'o',
             ms: 'ms'
         },
+        // 嗅探特性测试标签
         testEle = document.createElement('p'),
         cssSupport = {};
 
@@ -52,7 +52,8 @@
      * @return {[type]}      [description]
      */
     function normalizeEvent (name) {
-        return eventPrefix ? eventPrefix + name : name.toLowerCase();
+        name = name.toLowerCase();
+        return eventPrefix ? eventPrefix + name : name;
     }
 
     /**
@@ -77,16 +78,16 @@
 
     var Android = /android/i.test(navigator.userAgent);
     var ios = /ios/i.test(navigator.userAgent);
+
     // 兼容游览器嗅探不正确的问题
     if (Android) {
         // 安卓兼容
         transformStyle = cssSupport.webkitTransform;
     } else {
-        transformStyle = cssSupport.transform;
+        transformStyle = transform;
     }
 
     function init (opts) {
-        console.log(opts);
         fnGetPrize = opts.getPrize;
         fnGotBack = opts.gotBack;
         backgroundColor = opts.backgroundColor;
@@ -175,70 +176,80 @@
             ctx.restore();
 
             // 奖项列表
+            console.log(opts.prizes[i]);
+            var trans = transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)';
+            var imageUrl = opts.prizes[i].imageUrl;
+            //  shortName: 简称
+            var name = opts.prizes[i].shortName || opts.prizes[i].name;
+            var imageUrlWrapper = opts.prizes[i].imageUrlWrapper;
+            var prizeValue = (opts.prizes[i].prizeValue / 100).toFixed(2) + '元';
+            var prizeIntegral = opts.prizes[i].prizeValue;
             switch (opts.prizes[i].type) {
                 case 1:
                     // 积分
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + opts.prizes[i].prize_value + '积分</span>' +
-                        '<img src="http://img.mockuai.com/tms/2017/4/20/upload_099474c1a35b4d522f715f2d671af1c0.png">' +
+                        '<div class="gb-turntable-block" style="'+ trans +'">' +
+                        '<span>' + prizeIntegral + '积分</span>' +
+                        '<img src="'+ imageUrl +'">' +
                         '</div>' +
                         '</li>');
                     break;
                 case 2:
                     // 余额
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
-                        '<img src="http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png">' +
+                        '<div class="gb-turntable-block" style="'+ trans +'">' +
+                        '<span>'+ prizeValue +'</span>' +
+                        '<img src="'+ imageUrl +'">' +
                         '</div>' +
                         '</li>');
                     break;
                 case 3:
                     // 优惠券
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
-                        '<img src="http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png">' +
-                        '</div>' +
-                        '</li>');
+                                    '<div class="gb-turntable-block" style="'+ trans +'">' +
+                                        '<span>'+ prizeValue +'</span>' +
+                                        '<img src="'+ imageUrl +'">' +
+                                    '</div>' +
+                                '</li>');
                     break;
                 case 4:
                     // 现金
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + (opts.prizes[i].prize_value / 100).toFixed(2) + '元</span>' +
-                        '<img src="http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png">' +
-                        '</div>' +
-                        '</li>');
+                                    '<div class="gb-turntable-block" style="'+ trans +'">' +
+                                        '<span>' + prizeValue + '</span>' +
+                                        '<img src="'+ imageUrl +'">' +
+                                    '</div>' +
+                                '</li>');
                     break;
                 case 5:
                     // 商品
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span>' + (opts.prizes[i].item_short_name || opts.prizes[i].item_name) + '</span>' +
-                        '<img src="' + opts.prizes[i].item_image_url + '">' +
-                        '</div>' +
-                        '</li>');
+                                    '<div class="gb-turntable-block" style="'+ trans +'">' +
+                                        '<span>' + name + '</span>' +
+                                        '<img src="' + imageUrl + '">' +
+                                    '</div>' +
+                                '</li>');
                     break;
                 case 6:
                     // 未中奖
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '</span><span class="no-image">谢谢参与</span>' +
-                        '<img src="http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png">' +
-                        '</div>' +
-                        '</li>');
+                                    '<div class="gb-turntable-block" style="'+ trans +'">' +
+                                            '<span class="no-image">'+ name +'</span>' +
+                                            '<img src="'+ imageUrl +'">' +
+                                    '</div>' +
+                                '</li>');
                     break;
                 case 7:
                     // 带动画的效果商品
                     html.push('<li class="gb-turntable-item">' +
-                        '<div class="gb-turntable-block" style="' + transformStyle + ': rotate(' + i * turnNum + 'turn);transform: rotate(' + i * turnNum + 'turn);-webkit-transform: rotate(' + i * turnNum + 'turn)">' +
-                        '<span></span>' +
-                        '<div class="gb-turntable-prize-img-wrapper"><img class="gb-turntable-prize-img" src="' + opts.prizes[i].item_image_url + '">' +
-                        '<img class="gb-turntable-prize-default-img" src="' + opts.prizes[i].default_image_url + '">' +
-                        '</div></div>' +
-                        '</li>');
+                                    '<div class="gb-turntable-block" style="'+ trans +'">' +
+                                        '<span></span>' +
+                                        '<div class="gb-turntable-prize-img-wrapper">' +
+                                            '<img class="gb-turntable-prize-img" src="' + imageUrl + '">' +
+                                            '<img class="gb-turntable-prize-default-img" src="'+ imageUrlWrapper +'">' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</li>');
                     break;
             }
             if ((i + 1) === num) {
@@ -328,6 +339,7 @@
 
         // setTimeout(function() {
         // addClass(container, 'gb-run');transform
+        // 兼容安卓
         container.style[transformStyle] = 'rotate(' + deg + 'deg)';
         container.style.webkitTransform = 'rotate(' + deg + 'deg)';
         container.style.transform = 'rotate(' + deg + 'deg)';
@@ -361,7 +373,7 @@
              chances;*/
             fnGetPrize(function (data) {
                 if(!auto) {
-                    // 先经过一个很蠢的动画
+                    // 先经过一个动画
                     addClass(btn, 'disabled');
                     var prizeImg = ele.querySelectorAll('.gb-turntable-prize-img');
                     var tablewareImg = ele.querySelectorAll('.gb-turntable-prize-default-img');
@@ -398,7 +410,6 @@
             prizeId: data[0],
             chances: data[1]
         };
-        console.log(optsPrize);
         // 计算旋转角度
         var parity = Math.round(10 * Math.random());
         deg = deg || 0;
