@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
 ```js
 gbTurntable.init({
             id: 'turntable',                            // id
-            circleWidth: 400,                           // canvas画的圆的大小
+            circleWidth: 400,                           // 圆的大小
             auto: true,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
             backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
             bulb: {

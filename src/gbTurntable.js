@@ -17,8 +17,9 @@
         deg = 0,
         fnGetPrize,
         fnGotBack,
-        circleWidth,        // 圆的宽度
-        backgroundColor,    // 转盘间隔色
+        circleWidth,        // 圆的大小
+        bgBlock,            // 转盘间隔色
+        bgBlockLength = 0,
         bulb,               // 灯泡间隔色
         line,               // 边框
         auto,               // 自动出结果
@@ -90,7 +91,7 @@
     function init (opts) {
         fnGetPrize = opts.getPrize;
         fnGotBack = opts.gotBack;
-        backgroundColor = opts.backgroundColor;
+        bgBlock = opts.bgBlock;
         bulb = opts.bulb;
         line = opts.line;
         circleWidth = opts.circleWidth;
@@ -155,11 +156,12 @@
             // 绘制圆弧
             ctx.arc(0, 0, circleWidth, 0, 2 * Math.PI / num, false);
 
-            // 颜色间隔
-            if (i % 2 == 0) {
-                ctx.fillStyle = backgroundColor.split('/')[0];
+            var bgBlockList = bgBlock.split('/');
+            ctx.fillStyle = bgBlockList[bgBlockLength];
+            if(bgBlockLength === (bgBlockList.length - 1)) {
+                bgBlockLength = 0
             } else {
-                ctx.fillStyle = backgroundColor.split('/')[1];
+                bgBlockLength = bgBlockLength + 1;
             }
 
             // 填充扇形

@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>抽奖</title>
-    <link rel="stylesheet" href="./style/gbTurntable.css">
+    <link rel="stylesheet" href="./style/LiTurntable.css">
     <style>
         * {
             margin: 0;
             padding: 0;
         }
+        
         body {
-            background: #6da5ce;
+            background: #ffecbf;
         }
-
-        .wrapper{
-            margin-top: 50px;
+        
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             overflow: hidden;
         }
-
+        
         .fork-github {
             position: fixed;
             right: -100px;
@@ -35,121 +40,149 @@
             transform: rotate(45deg);
             text-align: center;
         }
-
+        
         .fork-github a {
             color: #fff;
         }
-
-        .gb-turntable a.gb-turntable-btn {
-            border: none;
-        }
-
     </style>
 </head>
+
 <body>
+    <div class="fork-github">
+        <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
+    </div>
 
-<div class="wrapper typo" id="wrapper">
-    <section id="turntable" class="gb-turntable">
-        <div class="gb-turntable-container">
-            <canvas class="gb-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
+    <div class="wrapper">
+        <div id="lottery" class="li-turntable">
+            <div class="li-turntable-container">
+                <canvas class="li-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
+            </div>
+            <div class="li-turntable-btn-wrapper">
+                <a class="li-turntable-btn" href="javascript:;">GO</a>
+            </div>
         </div>
+    </div>
 
-        <a class="gb-turntable-btn" href="javascript:;">GO</a>
-    </section>
-</div>
+    <script src="src/LiTurntable.js"></script>
 
-<div class="fork-github">
-    <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取奖品信息
+            var arr = [{
+                name: '谢谢参与',
+                type: 6,
+                id: 1,
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
+            }, {
+                name: '烧烤酱 3瓶',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+                imageUrlWrapper: './images/tableware.png',
+                type: 7,
+                level: 7,
+                id: 7,
+                sku_uid: '38699_67540',
+                item_uid: '38699_164711',
+                item_type: 1
+            }, {
+                name: '积分',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+                type: 1,
+                prizeValue: 300,
+                id: 3
+            }, {
+                name: '现金',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png',
+                type: 4,
+                prizeValue: 6,
+                id: 4
+            }, {
+                name: '优惠券',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
+                type: 3,
+                prizeValue: 5,
+                id: 5
+            }, {
+                name: '余额',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
+                type: 2,
+                prizeValue: 6,
+                id: 6
+            }, {
+                name: '烧烤酱 2瓶',
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
+                imageUrlWrapper: './images/tableware.png',
+                type: 5,
+                level: 7,
+                id: 7,
+                sku_uid: '38699_67540',
+                item_uid: '38699_164711',
+                item_type: 1
+            }, {
+                name: '谢谢参与',
+                type: 6,
+                id: 8,
+                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
+            }];
 
-<script src="src/gbTurntable.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 获取奖品信息
-        var arr = [{
-            name: '谢谢参与',
-            type: 6,
-            id: 1,
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
-        }, {
-            name: 'KC Masterpiece烧烤酱 3瓶',
-            imageUrl: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
-            imageUrlWrapper: './images/tableware.png',
-            type: 7,
-            level: 7,
-            id: 7,
-            sku_uid: '38699_67540',
-            item_uid: '38699_164711',
-            item_type: 1
-        }, {
-            name: '积分',
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
-            type: 1,
-            prizeValue: 300,
-            id: 3
-        }, {
-            name: '现金',
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png',
-            type: 4,
-            prizeValue: 6,
-            id: 4
-        }, {
-            name: '优惠券',
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
-            type: 3,
-            prizeValue: 5,
-            id: 5
-        }, {
-            name: '余额',
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
-            type: 2,
-            prizeValue: 6,
-            id: 6
-        }, {
-            name: 'KC Masterpiece烧烤酱 2瓶',
-            imageUrl: 'http://img.haimibuy.com/uploads/images/2016/10/31/a5816acbfe010a.jpg',
-            imageUrlWrapper: './images/tableware.png',
-            type: 5,
-            level: 7,
-            id: 7,
-            sku_uid: '38699_67540',
-            item_uid: '38699_164711',
-            item_type: 1
-        }, {
-            name: '谢谢参与',
-            type: 6,
-            id: 8,
-            imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
-        }];
-        gbTurntable.init({
-            id: 'turntable',
-            circleWidth: 400,
-            auto: false,                                 // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
-            backgroundColor: '#fe6869/#ff8a88',         // 转盘间隔色
-            bulb: {
-                needBulb: true,                         // 开关
-                color: '#f9ffe3/#ffe176',               // 灯泡间隔色
-                interval: 300                           // 时间间隔
-            },
-            line: {                                     // 边框
-                needLineWidth: true,                    // 开关
-                width: 2,                               // 边框大小
-                color: 'red'                            // 边框颜色
-            },
-            config: function (callback) {
-                callback && callback(arr);
-            },
-            getPrize: function (callback) {
-                // 获取中奖信息
-                var num = Math.random() * 6 >>> 0,   //奖品ID
-                    chances = num;  // 可抽奖次数
-                callback && callback([num, chances]);
-            },
-            gotBack: function (data) {
-                alert('恭喜抽中' + data.name || '未知奖品');
-            }
-        });
-    }, false);
-</script>
+            // gbTurntable.init({
+            //     id: 'lottery',
+            //     circleWidth: 400,                           // 圆的大小
+            //     auto: false,                                // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+            //     bgBlock: '#fe6869/#ff8a88',                 // 转盘间隔色
+            //     bulb: {
+            //         needBulb: true,                         // 开关
+            //         color: '#f9ffe3/#ffe176',               // 灯泡间隔色
+            //         interval: 300                           // 时间间隔
+            //     },
+            //     line: {                                     // 边框
+            //         needLineWidth: true,                    // 开关
+            //         width: 2,                               // 边框大小
+            //         color: 'red'                            // 边框颜色
+            //     },
+            //     config: function (callback) {
+            //         callback && callback(arr);
+            //     },
+            //     getPrize: function (callback) {
+            //         // 获取中奖信息
+            //         var num = Math.random() * 6 >>> 0,   //奖品ID
+            //             chances = num;  // 可抽奖次数
+            //         callback && callback([num, chances]);
+            //     },
+            //     gotBack: function (data) {
+            //         alert('恭喜抽中' + data.name || '未知奖品');
+            //     }
+            // });
+
+            LiTurntable.init({
+                id: 'lottery',
+                circleWidth: 400,                   // 圆的大小
+                auto: true,                         // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+                bgBlock: '#ffecbf/#fff/#ffc479',    // 转盘间隔色
+                bulb: {
+                    needBulb: false,                // 开关
+                    color: '#f9ffe3/#ffe176',       // 灯泡间隔色
+                    interval: 300                   // 时间间隔
+                },
+                line: {                             // 边框
+                    needLineWidth: true,            // 开关
+                    width: 2,                       // 边框大小
+                    color: '#fff'                   // 边框颜色
+                },
+                config: function(callback) {
+                    callback && callback(arr);
+                },
+                getPrize: function(callback) {
+                    // 获取中奖信息
+                    var num = Math.random() * 6 >>> 0, //奖品ID
+                        chances = num; // 可抽奖次数
+                    callback && callback([num, chances]);
+                },
+                gotBack: function(data) {
+                    alert('恭喜抽中' + data.name || '未知奖品');
+                }
+            })
+        }, false);
+    </script>
 </body>
+
 </html>
