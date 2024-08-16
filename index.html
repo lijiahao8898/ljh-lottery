@@ -13,11 +13,11 @@
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             background: #ffecbf;
         }
-        
+
         .wrapper {
             display: flex;
             justify-content: center;
@@ -25,7 +25,7 @@
             height: 100vh;
             overflow: hidden;
         }
-        
+
         .fork-github {
             position: fixed;
             right: -100px;
@@ -40,7 +40,7 @@
             transform: rotate(45deg);
             text-align: center;
         }
-        
+
         .fork-github a {
             color: #fff;
         }
@@ -48,112 +48,113 @@
 </head>
 
 <body>
-    <div class="fork-github">
-        <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
-    </div>
+<div class="fork-github">
+    <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
+</div>
 
-    <div class="wrapper">
-        <div id="lottery" class="li-turntable">
-            <div class="li-turntable-container">
-                <canvas class="li-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
-            </div>
-            <div class="li-turntable-btn-wrapper">
-                <a class="li-turntable-btn" href="javascript:;">GO</a>
-            </div>
+<div class="wrapper">
+    <div id="lottery" class="li-turntable">
+        <div class="li-turntable-container">
+            <canvas class="li-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
         </div>
+        <div class="li-turntable-btn-wrapper">
+            <a class="li-turntable-btn" href="javascript:;">GO</a>
+        </div>
+        <div style="font-size: 20px;position: absolute;top: -100px;left: 50%;transform: translateX(-50%)">今天吃什么？<span
+                id="result"></span></div>
     </div>
+</div>
 
-    <script src="src/LiTurntable.js"></script>
+<script src="src/LiTurntable.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 获取奖品信息
-            var arr = [{
-                name: '谢谢参与',
-                type: 6,
-                id: 1,
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
-            }, {
-                name: '烧烤酱 3瓶',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
-                imageUrlWrapper: './images/tableware.png',
-                type: 7,
-                level: 7,
-                id: 7,
-                sku_uid: '38699_67540',
-                item_uid: '38699_164711',
-                item_type: 1
-            }, {
-                name: '积分',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
-                type: 1,
-                prizeValue: 300,
-                id: 3
-            }, {
-                name: '现金',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_2a1cb4d92c032f2beceb2068f538f1ed.png',
-                type: 4,
-                prizeValue: 6,
-                id: 4
-            }, {
-                name: '优惠券',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_01686a17e5948d64da7cee3c5c84cd3f.png',
-                type: 3,
-                prizeValue: 5,
-                id: 5
-            }, {
-                name: '余额',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_0cf9e4de7e1d88874a3cc23997aa4347.png',
-                type: 2,
-                prizeValue: 6,
-                id: 6
-            }, {
-                name: '烧烤酱 2瓶',
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/10/upload_2375470d54275f27d23d6b4f91459ff0.png',
-                imageUrlWrapper: './images/tableware.png',
-                type: 5,
-                level: 7,
-                id: 7,
-                sku_uid: '38699_67540',
-                item_uid: '38699_164711',
-                item_type: 1
-            }, {
-                name: '谢谢参与',
-                type: 6,
-                id: 8,
-                imageUrl: 'http://img.mockuai.com/tms/2017/4/20/upload_9b73f3df2c0fcf25f96c77baf45b40c0.png'
-            }];
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 普通饮食 10选6
+        var text = [
+            '霸满盖浇饭',
+            '赛百味',
+            '牛肉饭',
+            '陈八两',
+            '香港新耀记',
+            '乡村基',
+            '袁记云吞',
+            '海鲜面',
+            '老娘舅',
+            '点外卖'
+        ]
+        // 常驻嘉宾 + 4
+        var permanentGuests = ['谢谢参与，重新抽取', '赛百味', '赛百味', '赛百味']
+        // 炸鸡汉堡 5选2
+        var junkFood = ['麦当劳', '肯德基', '汉堡王', '必胜客', '塔斯汀']
 
-            LiTurntable.init({
-                id: 'lottery',
-                circleWidth: 400,                   // 圆的大小
-                auto: true,                         // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
-                bgBlock: '#ffecbf/#fff/#ffc479',    // 转盘间隔色
-                bulb: {
-                    needBulb: false,                // 开关
-                    color: '#f9ffe3/#ffe176',       // 灯泡间隔色
-                    interval: 300                   // 时间间隔
-                },
-                line: {                             // 边框
-                    needLineWidth: true,            // 开关
-                    width: 2,                       // 边框大小
-                    color: '#fff'                   // 边框颜色
-                },
-                config: function(callback) {
-                    callback && callback(arr);
-                },
-                getPrize: function(callback) {
-                    // 获取中奖信息
-                    var num = Math.random() * 6 >>> 0, //奖品ID
-                        chances = num; // 可抽奖次数
-                    callback && callback([num, chances]);
-                },
-                gotBack: function(data) {
-                    alert('恭喜抽中' + data.name || '未知奖品');
-                }
-            })
-        }, false);
-    </script>
+        // 随机选择
+        function randomSelectHandle (selectArr, ranNum) {
+            var result = [];
+            // var ranNum = 8;
+            for (var i = 0; i < ranNum; i++) {
+                var ran = Math.floor(Math.random() * (selectArr.length - i));
+                result.push(selectArr[ran]);
+                selectArr[ran] = selectArr[selectArr.length - i - 1];
+            }
+            return  result
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const randomIndex = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]];
+            }
+            return arr;
+        }
+
+        // 日常用餐 10选6个
+        var commonSelectArr = randomSelectHandle(text, 6)
+        // 垃圾食品 5选2
+        var junkFoodSelectArr = randomSelectHandle(junkFood, 2)
+
+        const contactArr = commonSelectArr.concat(junkFoodSelectArr).concat(permanentGuests)
+
+        const newResult = shuffleArray(contactArr);
+
+        console.log(newResult, newResult.length)
+
+        // 获取奖品信息
+        var arr = newResult.map((item, index) => ({
+            id: index,
+            name: item,
+            type: 6,
+        }))
+        LiTurntable.init({
+            id: 'lottery',
+            circleWidth: 400,                   // 圆的大小
+            auto: true,                         // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
+            bgBlock: '#ffecbf/#fff/#ffc479',    // 转盘间隔色
+            bulb: {
+                needBulb: false,                // 开关
+                color: '#f9ffe3/#ffe176',       // 灯泡间隔色
+                interval: 300                   // 时间间隔
+            },
+            line: {                             // 边框
+                needLineWidth: true,            // 开关
+                width: 2,                       // 边框大小
+                color: '#fff'                   // 边框颜色
+            },
+            config: function (callback) {
+                callback && callback(arr);
+            },
+            getPrize: function (callback) {
+                // 获取中奖信息
+                var num = Math.random() * 6 >>> 0, //奖品ID
+                    chances = num; // 可抽奖次数
+                callback && callback([num, chances]);
+            },
+            gotBack: function (data) {
+                // alert('恭喜抽中' + data.name || '未知奖品');
+                document.getElementById('result').innerText = data.name + '!!'
+            }
+        })
+    }, false);
+</script>
 </body>
 
 </html>

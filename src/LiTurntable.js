@@ -230,7 +230,6 @@
                         html.push('<li class="li-turntable-item" style="' + trans + '">' +
                             '<div class="li-turntable-block">' +
                             '<span class="no-image">' + name + '</span>' +
-                            '<img src="' + imageUrl + '">' +
                             '</div>' +
                             '</li>');
                         break;

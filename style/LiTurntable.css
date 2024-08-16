@@ -14,6 +14,11 @@
     list-style: none
 }
 
+.no-image {
+    font-weight: bold;
+    font-size: 18px;
+}
+
 .li-turntable-container {
     position: absolute;
     left: 0;
