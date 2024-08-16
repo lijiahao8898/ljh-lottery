@@ -16,7 +16,7 @@
 
 .no-image {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .li-turntable-container {
@@ -91,20 +91,20 @@
 
 .li-turntalbe-list .li-turntable-item {
     position: absolute;
-    left: 150px;
+    left: 115px;
     top: 0;
     z-index: 1;
-    width: 100px;
-    height: 200px;
+    width: 70px;
+    height: 150px;
     color: #fff;
     font-size: 14px;
     border-radius: 50%;
     text-align: center;
     margin: 0 auto;
     text-align: center;
-    -webkit-transform-origin: 50% 200px;
-    -ms-transform-origin: 50% 200px;
-    transform-origin: 50% 200px;
+    -webkit-transform-origin: 50% 150px;
+    -ms-transform-origin: 50% 150px;
+    transform-origin: 50% 150px;
     z-index: 400;
 }
 
@@ -127,8 +127,8 @@
 
 .li-turntable-btn-wrapper {
     position: absolute;
-    left: 155px;
-    top: 155px;
+    left: 105px;
+    top: 105px;
     z-index: 1024;
     width: 90px;
     height: 90px;
@@ -235,9 +235,9 @@
 }
 
 #draw-cycle .draw-cycle-item .block {
-    -webkit-transform-origin: 50% 200px;
-    -ms-transform-origin: 50% 200px;
-    transform-origin: 50% 200px;
+    -webkit-transform-origin: 50% 150px;
+    -ms-transform-origin: 50% 150px;
+    transform-origin: 50% 150px;
 }
 
 .li-turntable-prize-img-wrapper {

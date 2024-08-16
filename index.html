@@ -55,12 +55,12 @@
 <div class="wrapper">
     <div id="lottery" class="li-turntable">
         <div class="li-turntable-container">
-            <canvas class="li-turntable-canvas" width="800" height="800">抱歉！浏览器不支持。</canvas>
+            <canvas class="li-turntable-canvas" width="600" height="600">抱歉！浏览器不支持。</canvas>
         </div>
         <div class="li-turntable-btn-wrapper">
             <a class="li-turntable-btn" href="javascript:;">GO</a>
         </div>
-        <div style="font-size: 20px;position: absolute;top: -100px;left: 50%;transform: translateX(-50%)">今天吃什么？<span
+        <div style="font-size: 18px;position: absolute;top: -100px;left: 50%;transform: translateX(-50%)">今天吃什么？<br/><span
                 id="result"></span></div>
     </div>
 </div>
@@ -126,7 +126,7 @@
         }))
         LiTurntable.init({
             id: 'lottery',
-            circleWidth: 400,                   // 圆的大小
+            circleWidth: 300,                   // 圆的大小
             auto: true,                         // 是否自动触发中奖结果 true 自动触发 false 需要手动点击奖品进行自行选择
             bgBlock: '#ffecbf/#fff/#ffc479',    // 转盘间隔色
             bulb: {
