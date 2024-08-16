@@ -22,7 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 80vh;
             overflow: hidden;
         }
 
@@ -44,6 +44,47 @@
         .fork-github a {
             color: #fff;
         }
+
+        .eated {
+            margin: 0 12px;
+        }
+
+        .eated-wrapper {
+            display: flex;
+        }
+
+        input,select {
+            -webkit-appearance: none;
+            background-color: #FFFFFF;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #DCDFE6;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 38px;
+            line-height: 38px;
+            outline: none;
+            padding: 0 15px;
+            -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+            width: 100%;
+        }
+
+        .btn {
+            background: #F9C33A;
+            padding: 10px 15px;
+            min-width: 60px;
+            margin-left: 10px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .btn-reset {
+            background: #E44025;
+        }
     </style>
 </head>
 
@@ -51,7 +92,6 @@
 <div class="fork-github">
     <a href="https://github.com/lijiahao8898/ljh-lottery">Fork me on Github</a>
 </div>
-
 <div class="wrapper">
     <div id="lottery" class="li-turntable">
         <div class="li-turntable-container">
@@ -65,10 +105,52 @@
     </div>
 </div>
 
+<div class="eated">
+    <div class="eated-wrapper">
+<!--        <input id="eat" />-->
+        <select id="eat">
+            <option value="霸满盖浇饭">霸满盖浇饭</option>
+            <option value="赛百味">赛百味</option>
+            <option value="牛肉饭">牛肉饭</option>
+            <option value="陈八两">陈八两</option>
+            <option value="香港新耀记">香港新耀记</option>
+            <option value="乡村基">乡村基</option>
+            <option value="袁记云吞">袁记云吞</option>
+            <option value="海鲜面">海鲜面</option>
+            <option value="老娘舅">老娘舅</option>
+            <option value="麦当劳">麦当劳</option>
+            <option value="肯德基">肯德基</option>
+            <option value="汉堡王">汉堡王</option>
+            <option value="必胜客">必胜客</option>
+            <option value="塔斯汀">塔斯汀</option>
+        </select>
+        <div id="btn" class="btn">添加</div>
+        <div id="btnReset" class="btn btn-reset">重置</div>
+    </div>
+    <div style="font-size: 20px;margin-top: 10px;">这周已经吃过：<div id="eatShow"></div></div>
+</div>
+
 <script src="src/LiTurntable.js"></script>
 
 <script>
+    var eatList = localStorage.getItem('eatList') ? JSON.parse(localStorage.getItem('eatList')) : {}
+    var btnDom = document.getElementById('btn')
+    var inputDom = document.getElementById('eat')
+    var eatShowDom = document.getElementById('eatShow')
+    var btnResetDom = document.getElementById('btnReset')
+    btnDom.addEventListener('click', function () {
+        console.log(inputDom.value)
+        eatList[inputDom.value] = 1
+        localStorage.setItem('eatList', JSON.stringify(eatList))
+        eatShowDom.innerText = Object.keys(eatList)
+    })
+
+    btnResetDom.addEventListener('click', function () {
+        localStorage.setItem('eatList', JSON.stringify({}))
+        eatShowDom.innerText = ''
+    })
     document.addEventListener('DOMContentLoaded', function () {
+        eatShowDom.innerText = Object.keys(eatList)
         // 普通饮食 10选6
         var text = [
             '霸满盖浇饭',
@@ -112,7 +194,9 @@
         // 垃圾食品 5选2
         var junkFoodSelectArr = randomSelectHandle(junkFood, 2)
 
-        const contactArr = commonSelectArr.concat(junkFoodSelectArr).concat(permanentGuests)
+        var contactArr = commonSelectArr.concat(junkFoodSelectArr)
+        contactArr = contactArr.filter(item => eatList[item] !== 1)
+        contactArr = contactArr.concat(permanentGuests)
 
         const newResult = shuffleArray(contactArr);
 
